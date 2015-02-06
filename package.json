@@ -1,0 +1,26 @@
+{
+  "name": "hubot",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Sonarr <hello@sonarr.tv>",
+  "description": "Hubot from Sonarr",
+  "dependencies": {
+    "hubot-scripts": "~2.5.16",
+    "hubot-rules": "~0.1.0",
+    "hubot-youtube": "~0.1.2",
+    "hubot-help": "~0.1.1",
+    "hubot-google-images": "~0.1.2",
+    "hubot-google-translate": "~0.1.0",
+    "hubot-pugme": "~0.1.0",
+    "hubot-heroku-keepalive": "0.0.4",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-shipit": "~0.1.1",
+    "hubot-redis-brain": "0.0.2",
+    "hubot": "~2.11.0",
+    "hubot-maps": "0.0.1",
+    "hubot-irc": "~0.2.7"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
