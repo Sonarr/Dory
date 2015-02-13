@@ -12,7 +12,6 @@
     "hubot-google-images": "~0.1.2",
     "hubot-google-translate": "~0.1.0",
     "hubot-pugme": "~0.1.0",
-    "hubot-diagnostics": "0.0.1",
     "hubot-shipit": "~0.1.1",
     "hubot-redis-brain": "0.0.2",
     "hubot": "~2.11.0",
