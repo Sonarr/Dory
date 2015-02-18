@@ -9,6 +9,7 @@
 
 services_root = 'http://services.sonarr.tv'
 moment = require('moment');
+color = require('irc-colors');
 
 module.exports = (robot) ->
   robot.respond /user count/i, (msg) ->
@@ -117,4 +118,5 @@ get_latest_update = (msg, branch) ->
    .get() (err, res, body) ->
 
       data = JSON.parse(body)
-      msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
+      date = ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
+      msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + color.lightgrey(date)

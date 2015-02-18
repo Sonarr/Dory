@@ -18,7 +18,8 @@
     "hubot-maps": "0.0.1",
     "hubot-irc": "~0.2.7",
     "hubot-tell": "*",
-    "moment": "*"
+    "moment": "*",
+    "irc-colors": "1.1.0"
   },
   "engines": {
     "node": "0.10.x"
