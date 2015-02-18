@@ -8,6 +8,7 @@
 #   markus101
 
 services_root = 'http://services.sonarr.tv'
+moment = require('moment');
 
 module.exports = (robot) ->
   robot.respond /user count/i, (msg) ->
@@ -116,4 +117,4 @@ get_latest_update = (msg, branch) ->
    .get() (err, res, body) ->
 
       data = JSON.parse(body)
-      msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version
+      msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
