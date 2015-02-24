@@ -19,7 +19,8 @@
     "hubot-irc": "~0.2.7",
     "hubot-tell": "*",
     "moment": "*",
-    "irc-colors": "1.1.0"
+    "irc-colors": "1.1.0",
+    "node-trello": "1.0.1"
   },
   "engines": {
     "node": "0.10.x"
