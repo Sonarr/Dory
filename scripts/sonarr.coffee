@@ -21,6 +21,9 @@ module.exports = (robot) ->
   robot.respond /latest(.*)/i, (msg) ->
     latest_branch msg, msg.match[1]
 
+  robot.respond /(?:changes|changelog)(.*)/i, (msg) ->
+    changes_branch msg, msg.match[1]
+
   robot.respond /(hello|hi|hey)/i, (msg) ->
     hello msg
 
@@ -82,6 +85,18 @@ latest_branch = (msg, branch) ->
   else
     get_latest_update msg, branch
 
+changes_branch = (msg, branch) ->
+
+  branch = branch.toLowerCase().replace /^\s+|\s+$/g, ""
+
+  if not branch.length
+    for branch in ['develop']
+      do (branch) ->
+        get_latest_changes msg, branch
+
+  else
+    get_latest_changes msg, branch
+
 latest = (msg) ->
 
   branches = [ 'master', 'develop' ]
@@ -136,3 +151,27 @@ get_latest_update = (msg, branch) ->
       data = JSON.parse(body)
       date = ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
       msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + color.lightgrey(date)
+
+get_latest_changes = (msg, branch) ->
+
+  msg.http(services_root + '/v1/update/' + branch)
+   .header('Accept', 'application/json')
+   .get() (err, res, body) ->
+
+      data = JSON.parse(body)
+      date = ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
+
+      changes = []
+      for change in data.updatePackage.changes.new
+        changes.push 'New: ' + change
+      for change in data.updatePackage.changes.fixed
+        changes.push 'Fixed: ' + change
+         
+      if changes.length == 0
+        msg.send 'Release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ' is a maintenance release.'
+        return        
+      msg.send 'Changelog for release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ':'
+      for change, index in changes
+        msg.send change if index < 3
+      if changes.length > 3
+        msg.send 'and ' + (changes.length - 3) + ' more' 
