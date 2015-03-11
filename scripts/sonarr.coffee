@@ -129,16 +129,32 @@ eta = (msg) ->
 
 blame_someone = (msg) ->
   blamer = msg.message.user.name
-  if [ "needo" ].indexOf(blamer) != -1
-    msg.send 'Blame yourself'
+  blamer = 'Taloth'
+  if blamer in [ 'needo' ]
+    msg.send 'Weren\'t you special?'
     return
-  blamees = [ "markus101", "kayone", "Taloth", "Nelluk", "NMe84", "xelra", "dory" ]
-  blamees = blamees.filter((blamee) -> blamee != blamer)
-  blamee = msg.random blamees
+  blamees =
+    'dory'     : 'dory'
+    'markus101': 'markvs101'
+    'kayone'   : 'kay0ne'
+    'Taloth'   : 'Ta1oth'
+    'Nelluk'   : 'N31luk'
+    'NMe84'    : 'NMa84'
+    'xelra'    : 'xe1ra'
+  blamee = msg.random (leet for name,leet of blamees when name isnt blamer)
   if blamee == "dory"
-    msg.send 'Sorry, blame whom for what? I suffer from short term memory loss.'
+    blame_quote_replies = [
+      'Sorry, blame whom for what? I suffer from short term memory loss.',
+      'Sorry, blame whom for what? I suffer from short term memory loss.',
+      'A man can fail many times, but he isn\'t a failure until he begins to blame somebody else.']
+    msg.send msg.random blame_quote_replies
     return
-  msg.send 'We\'ll just blame ' + blamee
+  blame_replies = [
+    'It was all ' + blamee + '\'s fault!',
+    'w/e, just blame ' + blamee,
+    'Must\'ve been ' + blamee,
+    'I suggest it was ' + blamee + ', in the Library, with the Candlestick.']
+  msg.send msg.random blame_replies
   
 # internal/non-response
 
@@ -168,11 +184,14 @@ get_latest_changes = (msg, branch) ->
         for change in data.updatePackage.changes.fixed
           changes.push 'Fixed: ' + change
          
-      if changes.length == 0
+      if not changes.length
         msg.send 'Release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ' is a maintenance release.'
-        return        
+        return
+
       msg.send 'Changelog for release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ':'
-      for change, index in changes
-        msg.send change if index < 3
-      if changes.length > 3
-        msg.send 'and ' + (changes.length - 3) + ' more' 
+
+      more = changes.splice(3)
+      for change in changes
+        msg.send change
+      if more.length
+        msg.send 'and ' + more.length + ' more'
