@@ -1,6 +1,5 @@
 [
 	"redis-brain.coffee",
-	"shipit.coffee",
 	"urban.coffee",
 	"brb.coffee",
 	"reload.coffee",
