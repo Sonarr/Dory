@@ -51,6 +51,9 @@ module.exports = (robot) ->
   robot.respond /works/i, (msg) ->
     msg.send 'http://www.wiliam.com.au/content/upload/blog/worksonmymachine.jpg'
 
+  robot.respond /(blame someone)$/i, (msg) ->
+    blame_someone msg
+
 count = (msg) ->
 
   msg.send 'Current user count:'
@@ -109,6 +112,19 @@ eta = (msg) ->
     "One day... I hope"]
   msg.send msg.random eta_replies
 
+blame_someone = (msg) ->
+  blamer = msg.message.user.name
+  if [ "needo" ].indexOf(blamer) != -1
+    msg.send 'Blame yourself'
+    return
+  blamees = [ "markus101", "kayone", "Taloth", "Nelluk", "NMe84", "xelra", "dory" ]
+  blamees = blamees.filter((blamee) -> blamee != blamer)
+  blamee = msg.random blamees
+  if blamee == "dory"
+    msg.send 'Sorry, blame whom for what? I suffer from short term memory loss.'
+    return
+  msg.send 'We\'ll just blame ' + blamee
+  
 # internal/non-response
 
 get_latest_update = (msg, branch) ->
