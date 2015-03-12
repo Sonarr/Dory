@@ -162,10 +162,11 @@ get_latest_changes = (msg, branch) ->
       date = ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
 
       changes = []
-      for change in data.updatePackage.changes.new
-        changes.push 'New: ' + change
-      for change in data.updatePackage.changes.fixed
-        changes.push 'Fixed: ' + change
+      if data.updatePackage.changes
+        for change in data.updatePackage.changes.new
+          changes.push 'New: ' + change
+        for change in data.updatePackage.changes.fixed
+          changes.push 'Fixed: ' + change
          
       if changes.length == 0
         msg.send 'Release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ' is a maintenance release.'
