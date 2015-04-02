@@ -22,8 +22,8 @@ module.exports = (robot) ->
                 "Sure, blame the computer",
                 "I do apologize for any inconvenience or alarm",
                 "oh god what have I done",
-                "uhhh whoops.  Sorry",
-                "Sigh.  I've really done it this time, haven't I?",
+                "uhhh whoops. Sorry",
+                "Sigh. I've really done it this time, haven't I?",
                 "Aww you know I was just kidding <3",
                 "We apologize for the fault in the botscript. Those responsible have been sacked."]
     msg.send msg.random apologies
