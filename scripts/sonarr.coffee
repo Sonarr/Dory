@@ -129,7 +129,6 @@ eta = (msg) ->
 
 blame_someone = (msg) ->
   blamer = msg.message.user.name
-  blamer = 'Taloth'
   if blamer in [ 'needo' ]
     msg.send 'Weren\'t you special?'
     return
