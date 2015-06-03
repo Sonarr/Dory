@@ -20,7 +20,6 @@
     "hubot-tell": "*",
     "moment": "*",
     "irc-colors": "1.1.0",
-    "node-trello": "1.0.1",
     "hubot-diagnostics": "0.0.1",
     "hubot-remind-her": "~0.3.0",
     "hubot-loudbot": "^1.4.1",
