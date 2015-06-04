@@ -192,5 +192,7 @@ get_latest_changes = (msg, branch) ->
       more = changes.splice(3)
       for change in changes
         msg.send change
-      if more.length
+      if more.length == 1
+        msg.send more[0]
+      else if more.length
         msg.send 'and ' + more.length + ' more'
