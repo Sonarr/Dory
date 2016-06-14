@@ -152,13 +152,16 @@ blame_someone = (msg) ->
     'It was all ' + blamee + '\'s fault!',
     'w/e, just blame ' + blamee,
     'Must\'ve been ' + blamee,
-    'I suggest it was ' + blamee + ', in the Library, with the Candlestick.']
+    'I suspect it was ' + blamee + ', in the Library, with the Candlestick.']
   msg.send msg.random blame_replies
   
 # internal/non-response
 
 get_latest_update = (msg, branch) ->
 
+  if check_frequent_user(msg)
+    return
+    
   msg.http(services_root + '/v1/update/' + branch)
    .header('Accept', 'application/json')
    .get() (err, res, body) ->
@@ -168,6 +171,9 @@ get_latest_update = (msg, branch) ->
       msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + color.lightgrey(date)
 
 get_latest_changes = (msg, branch) ->
+
+  if check_frequent_user(msg)
+    return
 
   msg.http(services_root + '/v1/update/' + branch)
    .header('Accept', 'application/json')
@@ -196,3 +202,10 @@ get_latest_changes = (msg, branch) ->
         msg.send more[0]
       else if more.length
         msg.send 'and ' + more.length + ' more'
+
+check_frequent_user = (msg) ->
+  if msg.message.room in ['#sonarr']
+    if msg.message.user.name in ['ggwptyvm']
+      msg.send 'Sorry, I don\'t remember.'
+      return true
+  return false
