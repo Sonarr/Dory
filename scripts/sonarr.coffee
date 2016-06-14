@@ -33,6 +33,12 @@ module.exports = (robot) ->
   robot.respond /log(\s|\-)?files/i, (msg) ->
     msg.send 'https://github.com/Sonarr/Sonarr/wiki/Log-Files'
 
+  robot.respond /backups?/i, (msg) ->
+    msg.send 'https://github.com/Sonarr/Sonarr/wiki/Backup-and-Restore'
+
+  robot.respond /(osx|mac)/i, (msg) ->
+    msg.send 'https://github.com/Sonarr/Sonarr/wiki/FAQ#i-use-sonarr-on-a-mac-and-it-suddenly-stopped-working-what-happened'
+
   robot.respond /naming|scene nam(?:e|ing)|scene/i, (msg) ->
     msg.send 'https://github.com/Sonarr/Sonarr/wiki/FAQ#why-cant-nzbdrone-import-episode-files-for-series-x--why-cant-nzbdrone-find-releases-for-series-x'
 
