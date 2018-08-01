@@ -21,20 +21,26 @@ class ChanServ
   csMsg: (msg, cmd) ->
     msg.robot.adapter.send {user: {name: "ChanServ"}}, cmd
 
-  csQuiet: (msg) ->
-    msg.robot.adapter.bot.whois msg.message.user.name, (whois) ->
+  csQuiet: (msg, username) ->
+    if not username
+      username = msg.message.user.name
+    msg.robot.adapter.bot.whois username, (whois) =>
       if whois.host
-        chanServ msg, "QUIET #{msg.message.room} *!#{whois.user}@#{whois.host}"
+        @csMsg msg, "QUIET #{msg.message.room} *!#{whois.user}@#{whois.host}"
 
-  csKickBan: (msg) ->
-    msg.robot.adapter.bot.whois msg.message.user.name, (whois) ->
+  csKickBan: (msg, username) ->
+    if not username
+      username = msg.message.user.name
+    msg.robot.adapter.bot.whois username, (whois) =>
       if whois.host
-        chanServ msg, "AKICK #{msg.message.room} ADD *!#{whois.user}@#{whois.host} !T 1h"
+        @csMsg msg, "AKICK #{msg.message.room} ADD *!#{whois.user}@#{whois.host} !T 1h"
 
-  csVoice: (msg) ->
-    msg.robot.adapter.bot.whois msg.message.user.name, (whois) ->
+  csVoice: (msg, username) ->
+    if not username
+      username = msg.message.user.name
+    msg.robot.adapter.bot.whois username, (whois) =>
       if whois.host
-        chanServ msg, "VOICE #{msg.message.user.room} #{msg.message.user.name}"
+        @csMsg msg, "VOICE #{msg.message.user.room} #{username}"
 
 class AutoVoice extends ChanServ
   constructor: (@robot) ->
@@ -51,14 +57,20 @@ class AutoVoice extends ChanServ
     robot.enter (msg) =>
       @userEnter msg
     robot.hear /autovoice me/i, (msg) =>
-      @userEnter msg
-    robot.hear /autovoice (\d+)/i, (msg) =>
+      @autoVoiceUser msg, msg.message.user.name
+    robot.hear /autovoice user (.*)/i, (msg) =>
+      @autoVoiceUser msg, msg.match[1]
+    robot.hear /autovoice delay (\d+)/i, (msg) =>
       @setAutoVoiceDelay msg, msg.match[1]
 
   userEnter: (msg) ->
     callback = => @csVoice msg
     if @autovoice_delay_msec >= 0
       setTimeout callback, @autovoice_delay_msec
+
+  autoVoiceUser: (msg, userName) ->
+    if @isOp(msg)
+      @csVoice msg, userName
 
   setAutoVoiceDelay: (msg, delay_msec) ->
     if delay_msec <= 0
