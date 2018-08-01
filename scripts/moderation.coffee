@@ -12,7 +12,7 @@
 module.exports = (robot) ->
   robot.hear /allah is doing/i, (msg) ->
     handlePotentialSpammer msg
-  robot.hear /bryanostergaard|encyclopediadramatica/i, (msg) ->
+  robot.hear /wiliampitcock|bryanostergaard|encyclopediadramatica/i, (msg) ->
     handlePotentialSpammer msg
 
 handlePotentialSpammer = (msg) =>
