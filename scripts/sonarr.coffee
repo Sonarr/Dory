@@ -10,7 +10,11 @@
 services_root = 'http://services.sonarr.tv'
 moment = require('moment');
 color = require('irc-colors');
-
+branchVersions = {
+  master: '2.0.0.0',
+  develop: '2.0.0.0',
+  phantom: '3.0.0.0'
+}
 module.exports = (robot) ->
   robot.respond /user count/i, (msg) ->
     count msg
@@ -84,12 +88,12 @@ latest_branch = (msg, branch) ->
   branch = branch.toLowerCase().replace /^\s+|\s+$/g, ""
 
   if not branch.length
-    for branch in ['master', 'develop']
+    for branch in ['master', 'develop', 'phantom']
       do (branch) ->
-        get_latest_update msg, branch
+        get_latest_update msg, branch, branchVersions[branch]
 
   else
-    get_latest_update msg, branch
+    get_latest_update msg, branch, branchVersions[branch]
 
 changes_branch = (msg, branch) ->
 
@@ -98,18 +102,18 @@ changes_branch = (msg, branch) ->
   if not branch.length
     for branch in ['develop']
       do (branch) ->
-        get_latest_changes msg, branch
+        get_latest_changes msg, branch, branchVersions[branch]
 
   else
-    get_latest_changes msg, branch
+    get_latest_changes msg, branch, branchVersions[branch]
 
 latest = (msg) ->
 
-  branches = [ 'master', 'develop' ]
+  branches = [ 'master', 'develop', 'phantom' ]
 
   for branch in branches
     do (branch) ->
-      get_latest_update msg, branch
+      get_latest_update msg, branch, branchVersions[branch]
 
 hello = (msg) ->
   sender_name = msg.message.user.name.toLowerCase()
@@ -163,12 +167,17 @@ blame_someone = (msg) ->
   
 # internal/non-response
 
-get_latest_update = (msg, branch) ->
+get_latest_update = (msg, branch, version) ->
 
   if check_frequent_user(msg)
     return
+
+  url = services_root + '/v1/update/' + branch;
+
+  if (version)
+    url += '?version=' + version;
     
-  msg.http(services_root + '/v1/update/' + branch)
+  msg.http(url)
    .header('Accept', 'application/json')
    .get() (err, res, body) ->
 
@@ -176,12 +185,17 @@ get_latest_update = (msg, branch) ->
       date = ' (' + moment(data.updatePackage.releaseDate).utc().format('YYYY-MM-DD HH:mm') + ' UTC)'
       msg.send 'The latest release for ' + branch + ' is ' + data.updatePackage.version + color.lightgrey(date)
 
-get_latest_changes = (msg, branch) ->
+get_latest_changes = (msg, branch, version) ->
 
   if check_frequent_user(msg)
     return
 
-  msg.http(services_root + '/v1/update/' + branch)
+  url = services_root + '/v1/update/' + branch;
+
+  if (version)
+    url += '?version=' + version;
+    
+  msg.http(url)
    .header('Accept', 'application/json')
    .get() (err, res, body) ->
 
