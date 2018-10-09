@@ -11,8 +11,8 @@ services_root = 'http://services.sonarr.tv'
 moment = require('moment');
 color = require('irc-colors');
 branchVersions = {
-  master: '2.0.0.0',
-  develop: '2.0.0.0',
+  master: '2.0.0.5228',
+  develop: '2.0.0.5249',
   phantom: '3.0.0.0'
 }
 module.exports = (robot) ->
