@@ -11,9 +11,9 @@ services_root = 'http://services.sonarr.tv'
 moment = require('moment');
 color = require('irc-colors');
 branchVersions = {
-  master: '2.0.0.5228',
-  develop: '2.0.0.5249',
-  phantom: '3.0.0.0'
+  'master': '2.0.0.5228',
+  'develop': '2.0.0.5249',
+  'phantom-develop': '3.0.0.0'
 }
 module.exports = (robot) ->
   robot.respond /user count/i, (msg) ->
@@ -88,7 +88,7 @@ latest_branch = (msg, branch) ->
   branch = branch.toLowerCase().replace /^\s+|\s+$/g, ""
 
   if not branch.length
-    for branch in ['master', 'develop', 'phantom']
+    for branch in ['master', 'develop', 'phantom-develop']
       do (branch) ->
         get_latest_update msg, branch, branchVersions[branch]
 
@@ -109,7 +109,7 @@ changes_branch = (msg, branch) ->
 
 latest = (msg) ->
 
-  branches = [ 'master', 'develop', 'phantom' ]
+  branches = [ 'master', 'develop', 'phantom-develop' ]
 
   for branch in branches
     do (branch) ->
@@ -164,7 +164,7 @@ blame_someone = (msg) ->
     'Must\'ve been ' + blamee,
     'I suspect it was ' + blamee + ', in the Library, with the Candlestick.']
   msg.send msg.random blame_replies
-  
+
 # internal/non-response
 
 get_latest_update = (msg, branch, version) ->
@@ -176,7 +176,7 @@ get_latest_update = (msg, branch, version) ->
 
   if (version)
     url += '?version=' + version;
-    
+
   msg.http(url)
    .header('Accept', 'application/json')
    .get() (err, res, body) ->
@@ -194,7 +194,7 @@ get_latest_changes = (msg, branch, version) ->
 
   if (version)
     url += '?version=' + version;
-    
+
   msg.http(url)
    .header('Accept', 'application/json')
    .get() (err, res, body) ->
@@ -208,7 +208,7 @@ get_latest_changes = (msg, branch, version) ->
           changes.push 'New: ' + change
         for change in data.updatePackage.changes.fixed
           changes.push 'Fixed: ' + change
-         
+
       if not changes.length
         msg.send 'Release ' + branch + ' ' + data.updatePackage.version + color.lightgrey(date) + ' is a maintenance release.'
         return
