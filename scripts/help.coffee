@@ -69,7 +69,7 @@ module.exports = (robot) ->
 
     # emit = cmds.join "\n"
 
-    msg.send "You can view all my commands here: http://dory.sonarr.tv/dory/help"
+    msg.send "You can view all my commands here: https://dory.sonarr.tv/dory/help"
 
   robot.router.get "/#{robot.name}/help", (req, res) ->
     cmds = robot.helpCommands().map (cmd) ->
