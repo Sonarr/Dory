@@ -11,9 +11,11 @@ services_root = 'http://services.sonarr.tv'
 moment = require('moment');
 color = require('irc-colors');
 branchVersions = {
-  'master': '2.0.0.5228',
-  'develop': '2.0.0.5249',
-  'phantom-develop': '3.0.0.0'
+  'main': '3',
+  'develop': '3',
+  'phantom-develop': '3',
+  'master': '2',
+  'v2': '2'
 }
 module.exports = (robot) ->
   robot.respond /user count/i, (msg) ->
@@ -88,7 +90,7 @@ latest_branch = (msg, branch) ->
   branch = branch.toLowerCase().replace /^\s+|\s+$/g, ""
 
   if not branch.length
-    for branch in ['master', 'develop', 'phantom-develop']
+    for branch in ['main', 'develop']
       do (branch) ->
         get_latest_update msg, branch, branchVersions[branch]
 
@@ -109,7 +111,7 @@ changes_branch = (msg, branch) ->
 
 latest = (msg) ->
 
-  branches = [ 'master', 'develop', 'phantom-develop' ]
+  branches = [ 'main', 'develop' ]
 
   for branch in branches
     do (branch) ->

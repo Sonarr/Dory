@@ -9,7 +9,7 @@
 
 url           = require('url')
 querystring   = require('querystring')
-branches = [ 'master', 'develop' ]
+branches = [ 'main', 'develop', 'v2' ]
 
 module.exports = (robot) ->
   robot.router.post "/#{robot.name}/teamcity", (req, res) ->
