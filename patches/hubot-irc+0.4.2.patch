@@ -1,0 +1,20 @@
+diff --git a/node_modules/hubot-irc/src/irc.coffee b/node_modules/hubot-irc/src/irc.coffee
+index 9315130..fe766ff 100644
+--- a/node_modules/hubot-irc/src/irc.coffee
++++ b/node_modules/hubot-irc/src/irc.coffee
+@@ -178,6 +178,7 @@ class IrcBot extends Adapter
+       usessl:   process.env.HUBOT_IRC_USESSL?
+       userName: process.env.HUBOT_IRC_USERNAME
+       usesasl:  process.env.HUBOT_IRC_USESASL?
++      retryDelay:  parseInt(process.env.HUBOT_IRC_RETRYDELAY) or 2000
+ 
+     client_options =
+       userName: options.userName
+@@ -194,6 +195,7 @@ class IrcBot extends Adapter
+       floodProtectionDelay: @unfloodProtectionDelay(options.unflood),
+       autoRejoin: true
+       retryCount: Infinity
++      retryDelay: options.retryDelay
+ 
+     client_options['channels'] = options.rooms unless options.nickpass
+ 

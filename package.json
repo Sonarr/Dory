@@ -23,6 +23,14 @@
     "hubot-diagnostics": "1.0.0",
     "hubot-remind-her": "~0.4.1",
     "hubot-loudbot": "^1.4.1",
-    "hubot-thank-you": "^0.0.3"
+    "hubot-thank-you": "^0.0.3",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0"
+  },
+  "resolutions": {
+    "irc": "matrix-org/node-irc#f222abe47897044aef89ee568e7edcb6b6260828"
+  },
+  "scripts": {
+    "postinstall": "patch-package"
   }
 }
